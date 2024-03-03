@@ -1,6 +1,6 @@
 {
-    "watch": ["src"],
+    "watch": ["./apps/rpsServer/src"],
     "ext": ".ts,.js",
     "ignore": [],
-    "exec": "npx ts-node ./src/index.ts"
+    "exec": "npx ts-node ./apps/rpsServer/src/index.ts"
 }

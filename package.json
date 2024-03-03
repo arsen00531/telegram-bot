@@ -3,11 +3,12 @@
   "version": "1.0.0",
   "description": "testwork",
   "main": "index.js",
-  "type": "module",
   "scripts": {
     "dev": "npx nodemon",
-    "build": "rimraf ./build && npx tsc",
-    "start": "npm run build && node build/index.js"
+    "build": "rimraf ./dist && npx tsc",
+    "start": "npm run build && npm run --",
+    "bot": "node ./dist/bot/src/index.js",
+    "rpsServer": "node ./dist/rpsServer/src/index.js"
   },
   "author": "",
   "license": "ISC",
