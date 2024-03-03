@@ -1,21 +1,9 @@
-// import { Telegraf } from 'telegraf';
-
 import { Telegraf, session } from "telegraf";
 import { IConfigService } from "../config/config.interface.js";
 import { ConfigService } from "../config/config.service.js";
 import { IBotContext } from "../context/context.interface.js";
 import { Command } from "../commands/command.class.js";
-
-// const bot = new Telegraf(process.env.BOT_TOKEN);
-
-// bot.launch({
-//     webhook: {
-//         domain: process.env.DOMAIN,
-//         path: process.env.path
-//     }
-// });
-
-// export { bot }
+import { StartCommand } from "../commands/start.command.js";
 
 class Bot {
     bot: Telegraf<IBotContext>;
@@ -29,6 +17,7 @@ class Bot {
     }
 
     async init() {
+        this.commands = [new StartCommand(this.bot)]
         for (const command of this.commands) {
             command.handle()
         }
@@ -44,3 +33,5 @@ class Bot {
 
 const bot = new Bot(new ConfigService())
 bot.init()
+
+export { bot }

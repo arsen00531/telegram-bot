@@ -1,14 +1,21 @@
 import { Request, Response } from "express";
+import { IGatewayDto } from "./gatewayDto.interface.js";
+import rabbitMQClient from '../rabbitmq/client.js'
 
 export class GatewayService {
 
     bot(req: Request, res: Response) {
         try {
-            const { message } = req.body;
-            console.log(message, 'lox');
-            if (message) {
-                // sendMessageToRabbitMQ(message);
-    
+            const { message }: IGatewayDto = req.body;
+            if (message.text === '/start') {
+                rabbitMQClient.produce(
+                    {
+                        chat: message.chat,
+                        path: message.text,
+                        entities: message.entities
+                    },
+                    String(message.message_id)
+                )
             }
             res.sendStatus(200);
         } catch (error) {
@@ -16,8 +23,4 @@ export class GatewayService {
             res.status(500).json({ error: 'Internal Server Error' });
         }
     }
-
-    // sendMessageToRabbitMQ(message: Object) {
-    //     channel.sendToQueue(queueName, Buffer.from(JSON.stringify(message)));
-    // }
 }

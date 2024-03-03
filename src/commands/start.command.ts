@@ -11,8 +11,6 @@ export class StartCommand extends Command {
     }
 
     handle(): void {
-        this.bot.start((ctx) => {
-            
-        })
+        console.log(this.bot.context);
     }
 }

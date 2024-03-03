@@ -1,9 +1,10 @@
 import { Router } from 'express';
-import { GatewayService } from './gateway.service.js';
+import { gatewayConfigs } from './gateway.config.js';
 
 const router = Router()
-const gatewayService = new GatewayService()
 
-router.post('/bot', gatewayService.bot);
+for (const gatewayConfig of gatewayConfigs) {
+    router.post(gatewayConfig.path, gatewayConfig.handler)
+}
 
 export { router }
