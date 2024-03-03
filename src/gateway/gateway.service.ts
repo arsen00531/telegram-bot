@@ -1,27 +1,17 @@
-import { IGatewayDto } from "./gatewayDto.interface.js";
-import rabbitMQClient from '../rabbitmq/client.js'
-import { Context } from "telegraf";
+import { Request, Response } from "express";
+import botInstanse from "../bot/Bot.js";
+
+const bot = botInstanse.getBot()
 
 export class GatewayService {
 
-    bot(ctx: any) {
+    botHandler(req: Request, res: Response) {
         try {
-            // console.log(ctx);
-            // const { message }: IGatewayDto = req.body;
-            // if (message.text === '/start') {
-            //     rabbitMQClient.produce(
-            //         {
-            //             chat: message.chat,
-            //             path: message.text,
-            //             entities: message.entities
-            //         },
-            //         String(message.message_id)
-            //     )
-            // }
-            // res.sendStatus(200);
+            bot.processUpdate(req.body)
+            res.sendStatus(200)
         } catch (error) {
-            // console.error('Error handling webhook:', error);
-            // res.status(500).json({ error: 'Internal Server Error' });
+            console.error('Error handling webhook:', error);
+            res.status(500).json({ error: 'Internal Server Error' });
         }
     }
 }

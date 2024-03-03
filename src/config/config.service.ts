@@ -1,7 +1,7 @@
 import { DotenvParseOutput, config } from "dotenv";
 import { IConfigService } from "./config.interface.js";
 
-export class ConfigService implements IConfigService {
+class ConfigService implements IConfigService {
     private config: DotenvParseOutput
     constructor() {
         const { error, parsed } = config()
@@ -22,3 +22,7 @@ export class ConfigService implements IConfigService {
         return res
     }
 }
+
+const configService = new ConfigService()
+
+export { configService }

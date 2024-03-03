@@ -2,17 +2,16 @@ import { Channel, Connection, connect } from "amqplib";
 import { IConfigService } from "../config/config.interface.js";
 import { Consumer, IConsumer } from "./consumer.js";
 import { IProducer, Producer } from "./producer.js";
-import { ConfigService } from "../config/config.service.js";
+import { configService } from "../config/config.service.js";
 
 class RabbitMQClient {
-    private constructor(
-        private configService: IConfigService,
-    ) {
+    private constructor() {
         this.consumer = undefined;
         this.connection = undefined;
         this.producerChannel = undefined;
         this.consumerChannel = undefined;
         this.producer = undefined;
+        this.configService = configService
     }
 
     private consumer: IConsumer | undefined
@@ -20,13 +19,14 @@ class RabbitMQClient {
     private producerChannel: Channel | undefined
     private consumerChannel: Channel | undefined
     private producer: IProducer | undefined
+    private configService: IConfigService
     private isInitialized = false
 
     private static instanse: RabbitMQClient
 
     public static getInstance() {
         if (!this.instanse) {
-            this.instanse = new RabbitMQClient(new ConfigService())
+            this.instanse = new RabbitMQClient()
         }
         return this.instanse
     }
