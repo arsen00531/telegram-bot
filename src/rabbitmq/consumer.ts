@@ -16,11 +16,12 @@ export class Consumer {
 
         this.channel.consume(
             this.replyQueueName, 
-            (message: ConsumeMessage | null) => {
-            if (message) {
-                console.log("reply", JSON.parse(message.content.toString()));
-            }
-        },
+            (message: ConsumeMessage | null) => 
+            {
+                if (message) {
+                    console.log("reply", JSON.parse(message.content.toString()));
+                }
+            },
             {
                 noAck: true
             }

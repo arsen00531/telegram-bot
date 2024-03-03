@@ -1,16 +1,22 @@
-import { Telegraf } from "telegraf";
 import { Command } from "./command.class.js";
-import { IBotContext } from "../context/context.interface.js";
+import TelegramBot from "node-telegram-bot-api";
 
 export class StartCommand extends Command {
 
     constructor(
-        bot: Telegraf<IBotContext>
+        bot: TelegramBot
     ) {
         super(bot)
     }
 
     handle(): void {
-        console.log(this.bot.context);
+        this.bot.onText(/\/help (.+)/, (msg, match) => {
+            const { chat: { id } } = msg
+            if(!match) return
+
+            const name = match[1];
+            this.bot.sendMessage(id, name)
+            .then(() => console.log("command send"))
+        })
     }
 }

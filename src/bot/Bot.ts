@@ -1,37 +1,36 @@
-import { Telegraf, session } from "telegraf";
 import { IConfigService } from "../config/config.interface.js";
-import { ConfigService } from "../config/config.service.js";
-import { IBotContext } from "../context/context.interface.js";
 import { Command } from "../commands/command.class.js";
 import { StartCommand } from "../commands/start.command.js";
+import TelegramBot from "node-telegram-bot-api";
 
-class Bot {
-    bot: Telegraf<IBotContext>;
-    commands: Command[] = []
+export class Bot {
+    private bot: TelegramBot;
+    private commands: Command[] = []
+    private botToken: string
 
     constructor(
         private readonly configService: IConfigService
     ) {
-        this.bot = new Telegraf<IBotContext>(this.configService.get('BOT_TOKEN'))
-        this.bot.use(session())
+        this.botToken = this.configService.get('BOT_TOKEN')
+        this.bot = new TelegramBot(this.configService.get('BOT_TOKEN'))
+    }
+
+    getBot(): TelegramBot {
+        if (!this.bot) {
+            this.bot = new TelegramBot(this.configService.get('BOT_TOKEN'))
+        }
+        return this.bot
     }
 
     async init() {
+        console.log("Bot init");
+
+        await this.bot.setWebHook(`${this.configService.get('DOMAIN')}/bot${this.botToken}`)
+
         this.commands = [new StartCommand(this.bot)]
         for (const command of this.commands) {
             command.handle()
         }
-        await this.bot.launch({
-            webhook: {
-                domain: this.configService.get('DOMAIN'),
-                path: this.configService.get('PATH')
-            }
-        })
     }
 
 }
-
-const bot = new Bot(new ConfigService())
-bot.init()
-
-export { bot }

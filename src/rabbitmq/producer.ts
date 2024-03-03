@@ -1,6 +1,5 @@
 import { Channel } from "amqplib";
 import { IConfigService } from "../config/config.interface.js";
-import { randomUUID } from "crypto";
 
 export interface IProducer {
     produceMessages(data: any, correlationId: string): void
