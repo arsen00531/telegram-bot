@@ -39,7 +39,7 @@ class Bot {
             return;
         }
         console.log("Bot init");
-
+        
         await this.bot.setWebHook(`${this.configService.get('DOMAIN')}/bot${this.botToken}`)
 
         this.commandsInstanse = [new StartCommand(this.bot)]
