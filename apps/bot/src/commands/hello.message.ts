@@ -13,7 +13,7 @@ export class HelloCommand extends MessageAbstract {
     }
 
     handle(): void {
-        this.bot.onText(/привет/, async (msg) => {
+        this.bot.onText(/привет!*/i, async (msg) => {
             const { chat: { id } } = msg
 
             await rabbitMQClient.produce(
