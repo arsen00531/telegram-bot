@@ -6,8 +6,17 @@ import { configService } from "../config/config.service.js";
 import { HelloCommand } from "../commands/hello.message.js";
 import { MessageAbstract } from "../commands/abstract/message.class.js";
 import { EventCommand } from "../commands/event.message.js";
+import { Session } from "../session/session.js";
+import { IUser } from "../interfaces/User.js";
 
-class Bot {
+export class Bot {
+
+    constructor() {
+        this.configService = configService
+        this.botToken = this.configService.get('BOT_TOKEN')
+        this.bot = new TelegramBot(this.botToken)
+    }
+
     public static instanse: Bot;
     private commandsInstanse: Command[] = []
     private commands: BotCommand[] = []
@@ -16,12 +25,7 @@ class Bot {
     private configService: IConfigService
     private isInitialized = false
     private bot: TelegramBot
-
-    constructor() {
-        this.configService = configService
-        this.botToken = this.configService.get('BOT_TOKEN')
-        this.bot = new TelegramBot(this.botToken)
-    }
+    private users: IUser[] = []
 
     public getBot() {
         return this.bot
@@ -34,6 +38,21 @@ class Bot {
         return this.instanse
     }
 
+    getUsers(id: number) {
+        return this.users.find(user => user.id === id)
+    }
+
+    setUsers(user: IUser) {
+        if (user) this.users.push(user)
+    }
+
+    changeUsers(id: number) {
+        const user = this.users.find(user => user.id === id)
+        if (!user) return console.log("change users error", this.users);
+        const iUser = this.users.indexOf(user)
+        this.users[iUser].thanks = true
+    }
+
     async init() {
         if (this.isInitialized) {
             return;
@@ -44,6 +63,7 @@ class Bot {
 
         this.commandsInstanse = [new StartCommand(this.bot)]
         this.messagesInstanse = [new HelloCommand(this.bot), new EventCommand(this.bot)]
+
         for (const command of this.commandsInstanse) {
             command.handle()
             this.commands.push(command.getCommand())

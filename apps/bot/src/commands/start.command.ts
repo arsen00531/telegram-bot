@@ -1,5 +1,7 @@
+import Bot from "../bot/Bot.js";
 import { Command } from "./abstract/command.class.js";
 import TelegramBot from "node-telegram-bot-api";
+import { checkUser } from "./users.js";
 
 export class StartCommand extends Command {
 
@@ -9,12 +11,16 @@ export class StartCommand extends Command {
         super(bot)
     }
 
-    handle(): void {
+    async handle() {
+        let userId: number
         this.bot.onText(/\/start/, async (msg) => {
             const { chat: { id } } = msg
-            
-            this.bot.sendMessage(id, "Привет!")
-            this.bot.sendPhoto(id, 'https://interesnoewmire.ru/wp-content/uploads/165-kartinok-s-privetom-9487e8e.jpg')
+            userId = msg.from.id
+
+            await this.bot.sendMessage(id, "Привет!")
+            await this.bot.sendPhoto(id, 'https://interesnoewmire.ru/wp-content/uploads/165-kartinok-s-privetom-9487e8e.jpg')
+
+            checkUser(msg.from.id)
         })
     }
 

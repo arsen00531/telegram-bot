@@ -1,8 +1,8 @@
 import TelegramBot from "node-telegram-bot-api";
 import { MessageAbstract } from "./abstract/message.class.js";
-import { thanks } from "../scenarios/thanks.js";
 import { cost, free } from "../scenarios/freeCost.scenario.js";
 import { tarif } from "../scenarios/tarif.scenario.js";
+import { checkUser } from "./users.js";
 
 export class EventCommand extends MessageAbstract {
 
@@ -14,6 +14,7 @@ export class EventCommand extends MessageAbstract {
 
     handle(): void {
         this.bot.on('callback_query', async (ctx) => {
+            checkUser(ctx.from.id)
             try {
                 switch(ctx.data) {
                     case 'tryFree':
@@ -23,7 +24,6 @@ export class EventCommand extends MessageAbstract {
                         cost(this.bot, ctx)
                         break;
                 }
-                
                 switch(ctx.message.text) {
                     case 'Тариф':
                         tarif(this.bot, ctx)
