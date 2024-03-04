@@ -3,7 +3,7 @@ version: '3.0'
 services:
   rabbitmq:
     image: rabbitmq:3.8-management-alpine
-    container_name: 'rabbitmq'
+    container_name: rabbitmq
     restart: always
     environment:
       - RABBITMQ_DEFAULT_USER=root
@@ -16,21 +16,14 @@ services:
   bot:
     build:
       dockerfile: Dockerfile
-      context: "./apps/bot/"
+      context: "./bot"
     restart: always
-    environment:
-      - RABBITMQ_CONTAINER_NAME=rabbitmq
-      - RABBITMQ_DEFAULT_USER=username
-      - RABBITMQ_DEFAULT_PASS=your-password
-      - RABBITMQ_DEFAULT_PORT=5672
-      - TELEGRAM_BOT_TOKEN=your-bot-token
-      - TELEGRAM_BOT_USERNAME=your-bot-username-example-@test123
     volumes:
       - type: bind
         source: ./apps/bot
         target: /app
     depends_on:
-      - rps_server
+      - rabbitmq
     networks:
         - rabbitmq_nodejs
     ports:
@@ -38,16 +31,8 @@ services:
 
   rps_server:
     build:
-      dockerfile: Dockerfile
-      context: "./apps/rpsServer/"
+      context: "./rpsServer"
     restart: always
-    environment:
-      - RABBITMQ_CONTAINER_NAME=rabbitmq
-      - RABBITMQ_DEFAULT_USER=username
-      - RABBITMQ_DEFAULT_PASS=your-password
-      - RABBITMQ_DEFAULT_PORT=5672
-      - TELEGRAM_BOT_TOKEN=your-bot-token
-      - TELEGRAM_BOT_USERNAME=your-bot-username-example-@test123
     depends_on:
       - rabbitmq
     volumes:

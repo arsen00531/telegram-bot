@@ -1,6 +1,6 @@
 FROM node:18.16.0
 
-WORKDIR /app
+WORKDIR /
 
 COPY package*.json ./
 
@@ -8,4 +8,6 @@ RUN npm install
 
 COPY . .
 
-CMD ["npm", "./dist/bot/src/index.js"]
+COPY ./dist ./dist
+
+CMD ["npm", "start"]

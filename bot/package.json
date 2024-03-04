@@ -6,9 +6,7 @@
   "scripts": {
     "dev": "npx nodemon",
     "build": "rimraf ./dist && npx tsc",
-    "start": "npm run build && npm run --",
-    "bot": "node ./dist/bot/src/index.js",
-    "rpsServer": "node ./dist/rpsServer/src/index.js"
+    "start": "npm run build && node ./dist/index.js"
   },
   "author": "",
   "license": "ISC",
