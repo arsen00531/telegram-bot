@@ -1,7 +1,6 @@
 import rabbitMQClient from "../rabbitmq/client.js";
 import TelegramBot from "node-telegram-bot-api";
 import { MessageAbstract } from "./abstract/message.class.js";
-import Bot from "../bot/Bot.js";
 import { checkUser } from "./users.js";
 
 export class HelloCommand extends MessageAbstract {

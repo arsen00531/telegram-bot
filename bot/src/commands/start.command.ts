@@ -1,4 +1,3 @@
-import Bot from "../bot/Bot.js";
 import { Command } from "./abstract/command.class.js";
 import TelegramBot from "node-telegram-bot-api";
 import { checkUser } from "./users.js";
