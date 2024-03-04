@@ -1,4 +1,6 @@
 import { Channel, ConsumeMessage } from "amqplib";
+import TelegramBot from "node-telegram-bot-api";
+import Bot from "../bot/Bot";
 
 export interface IConsumer {
     consumeMessage(): void
@@ -16,10 +18,20 @@ export class Consumer {
 
         this.channel.consume(
             this.replyQueueName, 
-            (message: ConsumeMessage | null) => 
+            async (message: ConsumeMessage | null) => 
             {
                 if (message) {
-                    console.log("reply", JSON.parse(message.content.toString()));
+                    const { msg }: { msg: TelegramBot.Message } = JSON.parse(message.content.toString())
+                    
+                    const bot = Bot.getBot()
+                    bot.sendMessage(msg.chat.id, 'Выбери действие', {
+                        reply_markup: {
+                            inline_keyboard: [
+                                [{ text: 'Выбрать тариф', callback_data: 'chooseWay' }],
+                                [{ text: 'Попробовать бесплатно', callback_data: 'tryFree' }],
+                            ]
+                        }
+                    })
                 }
             },
             {

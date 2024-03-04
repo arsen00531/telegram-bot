@@ -1,5 +1,6 @@
 import { Channel } from "amqplib";
 import { IConfigService } from "../config/config.interface.js";
+import { configService } from "../config/config.service.js";
 
 export interface IProducer {
     produceMessages(data: any, correlationId: string): void
@@ -7,10 +8,13 @@ export interface IProducer {
 
 export class Producer {
     constructor(
-        private configService: IConfigService,
         private channel: Channel,
         private replyQueueName: string
-    ) {}
+    ) {
+        this.configService = configService
+    }
+
+    private configService: IConfigService
 
     async produceMessages(data: any, correlationId: string) {
         console.log("the corr id is", correlationId);

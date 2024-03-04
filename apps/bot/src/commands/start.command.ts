@@ -1,4 +1,4 @@
-import { Command } from "./command.class.js";
+import { Command } from "./abstract/command.class.js";
 import TelegramBot from "node-telegram-bot-api";
 
 export class StartCommand extends Command {
@@ -10,13 +10,18 @@ export class StartCommand extends Command {
     }
 
     handle(): void {
-        this.bot.onText(/\/help (.+)/, (msg, match) => {
+        this.bot.onText(/\/start/, async (msg) => {
             const { chat: { id } } = msg
-            if(!match) return
-
-            const name = match[1];
-            this.bot.sendMessage(id, name)
-            .then(() => console.log("command send"))
+            
+            this.bot.sendMessage(id, "Привет!")
+            this.bot.sendPhoto(id, 'https://interesnoewmire.ru/wp-content/uploads/165-kartinok-s-privetom-9487e8e.jpg')
         })
+    }
+
+    getCommand() {
+        return {
+            command: 'start',
+            description: 'Старт бота'
+        }
     }
 }

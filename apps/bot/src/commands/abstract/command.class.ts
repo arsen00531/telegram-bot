@@ -1,4 +1,4 @@
-import TelegramBot from "node-telegram-bot-api";
+import TelegramBot, { BotCommand } from "node-telegram-bot-api";
 
 export abstract class Command {
     constructor(
@@ -6,4 +6,6 @@ export abstract class Command {
     ) {}
 
     abstract handle(): void
+
+    abstract getCommand(): BotCommand
 }

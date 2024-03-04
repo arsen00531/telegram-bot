@@ -1,7 +1,7 @@
 import express from 'express';
-import rabbitMQClient from './rabbitmq/client.js';
-import botInstanse from './bot/Bot.js';
-import { router } from './gateway/gateway.controller.js';
+import rabbitMQClient from './rabbitmq/client';
+import botInstanse from './bot/Bot';
+import { router } from './gateway/gateway.controller';
 
 const app = express();
 app.use(express.json());

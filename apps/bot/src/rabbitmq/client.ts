@@ -44,7 +44,6 @@ class RabbitMQClient {
             const { queue: replyQueueName } = await this.consumerChannel.assertQueue('', {exclusive: true})
 
             this.producer = new Producer(
-                this.configService,
                 this.producerChannel, 
                 replyQueueName
             )
@@ -62,6 +61,7 @@ class RabbitMQClient {
     async produce(data: any, correlationId: string) {
         if (!this.isInitialized) {
             await this.initialize()
+            this.isInitialized = true
         }
 
         if (this.producer) {
